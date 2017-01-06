@@ -1,0 +1,20 @@
+<workflow-app name="bde-uebung6" xmlns="uri:oozie:workflow:0.5">
+	<start to="MapReduce" />
+	<kill name="Kill">
+		<message>Action failed, error
+			message[${wf:errorMessage(wf:lastErrorNode())}]
+		</message>
+	</kill>
+	<action name="MapReduce">
+		<java>
+			<job-tracker>${jobTracker}</job-tracker>
+			<name-node>${nameNode}</name-node>
+			<main-class>de.sb.BeerAnalyzer.BeerDriver</main-class>
+			<arg>/input/beer_data.txt</arg>
+			<arg>/output</arg>
+		</java>
+		<ok to="End" />
+		<error to="Kill" />
+	</action>
+	<end name="End" />
+</workflow-app>
